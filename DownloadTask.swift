@@ -6,7 +6,7 @@ public class Espresso : NSObject {
 
     public func download() {
         let config = NSURLSessionConfiguration.defaultSessionConfiguration()
-        let userPasswordString = "puskulka:nhy67ujm"
+        let userPasswordString = "<username>:<password>"
         let userPasswordData = userPasswordString.dataUsingEncoding(NSUTF8StringEncoding)
         let base64EncodedCredential = userPasswordData!.base64EncodedStringWithOptions([])
         let authString = "Basic \(base64EncodedCredential)"
@@ -14,7 +14,7 @@ public class Espresso : NSObject {
         let session = NSURLSession(configuration: config, delegate: self, delegateQueue: nil)
 
         self.running = false
-        let url = NSURL(string: "https://espresso.hursley.ibm.com/perl/secure/fetch/hybrid-80/MACOSX_X64/macosxx6480sr3hybrid/20160422_02/macosxx6480sr3hybrid-20160422_02-jre.tar.Z")
+        let url = NSURL(string: "<complete url>")
         let task = session.downloadTaskWithURL(url!)
         self.running = true
         task.resume()
