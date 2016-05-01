@@ -23,17 +23,6 @@ public class Espresso : NSObject {
 
 
 extension Espresso : NSURLSessionDownloadDelegate {
-    
-    private func stars(n: Int) -> String {
-        let st = NSMutableString(capacity: 100)
-        guard n > 0 else {
-            return st as String
-        } 
-        for _ in 1...n {
-            st.appendString("*")
-        }
-        return st as String
-    }
 
     public func URLSession(session: NSURLSession, downloadTask: NSURLSessionDownloadTask, didWriteData bytesWritten: Int64, 
                               totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
