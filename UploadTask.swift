@@ -6,47 +6,53 @@ public class UploadTask : NSObject {
     public var uploading = false
     let filePath: String
     let fileName: String
+    var task: URLSessionDataTask! = nil
+    var session: URLSession! = nil
+    var request: NSMutableURLRequest! = nil
+
 
     public init( filePath: String) {
         self.filePath = filePath
-        let arr = filePath.characters.split("/")
+        let arr = filePath.components(separatedBy: "/") //.characters.split("/")
         fileName = String(arr[arr.count-1])
     }
     public func upload() {
-        let config = NSURLSessionConfiguration.defaultSessionConfiguration()
+        let config = URLSessionConfiguration.default()
          
-        let token = "<app token>"
+        let token = "DNgx_edczdsAAAAAAAAES41AWvsFJ25lO2YmxNYQS0UK3TSPCEXqZM6Efa-m4gX4"
         let authString = "Bearer \(token)"
         
-        let session = NSURLSession(configuration: config, delegate: nil, delegateQueue: nil)
+        session = URLSession(configuration: config, delegate: nil, delegateQueue: nil)
 
-        let request = NSMutableURLRequest(URL: NSURL(string: "https://api-content.dropbox.com/1/files_put/auto/\(fileName)")!)
-        request.HTTPMethod = "PUT" 
+        request = NSMutableURLRequest(url: URL(string: "https://api-content.dropbox.com/1/files_put/auto/\(fileName)")!)
+        request.httpMethod = "PUT" 
         request.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
         request.setValue(authString, forHTTPHeaderField: "Authorization")
+        var fileData: Data! = nil
+        do {
+            fileData =  try Data(contentsOf: URL(fileURLWithPath: filePath))
+        } catch {print("Oh")}
 
-        uploading = true
-        let task = session.uploadTaskWithRequest(request, fromData: NSData(contentsOfFile: filePath)!, completionHandler: {
+        print(fileData)
+        task = session.uploadTask(with: request, fromData: fileData, completionHandler: {
              (_, response, error) in 
                 let httpResponse = response as! NSHTTPURLResponse?
 
                 if httpResponse!.statusCode == 200 {
                     print("Upload successful!")
                 } else {
-                    print(error!.localizedDescription)
+                    print("Error")
                 }
  
                 self.uploading = false
         })
         task.resume()
+        uploading = true
     }
 }
 
-let e = UploadTask(filePath: "/Users/puskulka/yard/nsurlsession-tests/hello.txt")
+let e = UploadTask(filePath: "/root/pushkar/nsurlsession/tests/prepare.sh")
 e.upload() 
 while e.uploading {
     sleep(1)
 }
-
-
-
