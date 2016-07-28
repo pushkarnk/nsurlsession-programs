@@ -46,11 +46,10 @@ extension DataTask : URLSessionDataDelegate {
 }
 
 var d: DataTask
-for country in ["India","Japan", "Greece",  "Nepal", "Bangladesh", "Pakistan", "Bhutan", "Afghanistan", "Iceland"] {
+for country in ["India", "Israel", "UK", "USA"] {
     d = DataTask(country: country)
     d.getCountryData()
     while d.downloading {
-        print("Waiting") 
         sleep(1)
      }
     print ("The capital of \(country) is \(d.capital)")

@@ -16,6 +16,7 @@ public class UploadTask : NSObject {
         let arr = filePath.components(separatedBy: "/") //.characters.split("/")
         fileName = String(arr[arr.count-1])
     }
+
     public func upload() {
         let config = URLSessionConfiguration.default()
          
@@ -31,9 +32,8 @@ public class UploadTask : NSObject {
         var fileData: Data! = nil
         do {
             fileData =  try Data(contentsOf: URL(fileURLWithPath: filePath))
-        } catch {print("Oh")}
+        } catch {}
 
-        print(fileData)
         task = session.uploadTask(with: request, fromData: fileData, completionHandler: {
              (_, response, error) in 
                 let httpResponse = response as! NSHTTPURLResponse?
@@ -51,7 +51,7 @@ public class UploadTask : NSObject {
     }
 }
 
-let e = UploadTask(filePath: "/root/pushkar/nsurlsession/tests/prepare.sh")
+let e = UploadTask(filePath: "/root/pushkar/nsurlsession/tests/license.txt")
 e.upload() 
 while e.uploading {
     sleep(1)

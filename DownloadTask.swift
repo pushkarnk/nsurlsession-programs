@@ -15,7 +15,6 @@ public class Espresso : NSObject {
         task.resume()
         self.running = true
         while self.running {
-            print("Waiting ...")
             sleep(1)
         }
     }
@@ -26,7 +25,6 @@ extension Espresso : URLSessionDownloadDelegate {
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64,
                            totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) -> Void {
-        print(totalBytesWritten)
         let percentage = (Double(totalBytesWritten)/Double(totalBytesExpectedToWrite)) * 100
         if Int64(percentage) != currDownload  {
             print("\(Int(percentage))%")
@@ -36,17 +34,10 @@ extension Espresso : URLSessionDownloadDelegate {
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("\nFinished download at \(location.absoluteString)!")
-        do {
-            let attr = try FileManager.default().attributesOfItem(atPath: location.path!)
-            print((attr[NSFileSize]! as? NSNumber)!.intValue)
-        } catch {
-           print("Error: \(error)")
-        }
         self.running = false
     }
 
 }
-
 
 let e = Espresso()
 e.download(urlString: "https://swift.org/LICENSE.txt")
