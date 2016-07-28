@@ -1,7 +1,8 @@
 import Foundation
 
-public class Espresso : NSObject {
-    
+//DownloadTask
+public class DownloadTask : NSObject {
+
     internal var running: Bool = false
     var currDownload: Int64 = -1 
     
@@ -21,7 +22,7 @@ public class Espresso : NSObject {
 }
 
 
-extension Espresso : URLSessionDownloadDelegate {
+extension DownloadTask : URLSessionDownloadDelegate {
     
     public func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64,
                            totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) -> Void {
@@ -39,5 +40,5 @@ extension Espresso : URLSessionDownloadDelegate {
 
 }
 
-let e = Espresso()
+let e = DownloadTask()
 e.download(urlString: "https://swift.org/LICENSE.txt")
